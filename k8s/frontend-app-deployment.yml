@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-node-deployment
+  labels:
+    app: ms-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-node
+  template:
+    metadata:
+      labels:
+        app: ms-node
+    spec:
+      containers:
+        - name: ms-node
+          image: ghcr.io/itsupportahm/frontend-app:latest
+          envFrom:
+            - configMapRef:
+                name: ms-node-config
+          ports:
+            - containerPort: 80 # Assuming the application runs on port 80 internally
+          command: ['/bin/sh', '-c', 'while sleep 1000; do :; done']
+          volumeMounts:
+            - mountPath: /workspace
+              name: workspace-volume
+      volumes:
+        - name: workspace-volume
+          persistentVolumeClaim:
+            claimName: workspace-pvc

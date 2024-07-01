@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-app
+  template:
+    metadata:
+      labels:
+        app: frontend-app
+    spec:
+      volumes:
+        - name: workspace-volume
+          emptyDir: {}
+      initContainers:
+        - name: init-clone
+          image: alpine/git
+          command: ["sh", "-c"]
+          args:
+            - >
+              git clone https://github.com/itsupportahm/mystestapp /workspace/site &&
+              chown -R 1000:1000 /workspace/site
+          volumeMounts:
+            - name: workspace-volume
+              mountPath: /workspace/site
+      containers:
+        - name: frontend-app
+          image: ghcr.io/itsupportahm/frontend-app:latest
+          ports:
+            - containerPort: 7000
+          env:
+            - name: AQEDEV_UID
+              value: "1000"
+            - name: AQEDEV_GID
+              value: "1000"
+            - name: NODE_PORT
+              value: "7000"
+          volumeMounts:
+            - name: workspace-volume
+              mountPath: /workspace/site

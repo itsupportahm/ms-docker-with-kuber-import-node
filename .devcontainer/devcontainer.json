@@ -1,0 +1,42 @@
+{
+	"name": "ms-docker-node-only",
+	"dockerComposeFile": ["../docker-compose.yml"],
+	"service": "frontend-app",
+	"workspaceFolder": "/workspace",
+	"remoteUser": "aqedev",
+	"containerUser": "aqedev",
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			"settings": {
+				"editor.codeActionsOnSave": {
+					"source.fixAll.eslint": true,
+					"source.formatDocument": true
+				},
+				"editor.defaultFormatter": "esbenp.prettier-vscode",
+				"[javascript]": {
+					"editor.defaultFormatter": "esbenp.prettier-vscode"
+				},
+				"editor.formatOnSave": true,
+				"editor.tabSize": 2,
+				"prettier.printWidth": 80,
+				"prettier.requireConfig": false,
+				"prettier.singleQuote": true,
+				"prettier.useTabs": true,
+				"prettier.tabWidth": 2,
+				"prettier.trailingComma": "es5"
+			},
+			"extensions": [
+				"cweijan.vscode-database-client2",
+				//"dotenv.dotenv-vscode",
+				"editorconfig.editorconfig",
+				"esbenp.prettier-vscode",
+				"dbaeumer.vscode-eslint",
+				//"github.copilot",
+				"mtxr.sqltools",
+				"mtxr.sqltools-driver-mysql",
+				"redhat.vscode-yaml"
+			]
+		}
+	}
+}

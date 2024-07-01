@@ -1,0 +1,33 @@
+x-common: &common
+  working_dir: /workspace/site
+  env_file: .env
+
+x-wait-command: &wait-command
+  command: /bin/sh -c
+    "while sleep 1000; do :; done;"
+
+services:
+  frontend-app:
+    build:
+      #context: ./docker
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - "AQEDEV_UID=${AQEDEV_UID-1000}"
+        - "AQEDEV_GID=${AQEDEV_GID-1000}"
+    volumes:
+      - .:/workspace:cached
+      #- ./site:/workspace
+    ports:
+      - "${NODE_PORT:-3000}:${NODE_PORT:-3000}"
+    environment:
+      AQEDEV_UID: ${AQEDEV_UID-1000}
+      AQEDEV_GID: ${AQEDEV_UID-1000}
+      NODE_PORT: ${NODE_PORT:-3000}
+    networks:
+     - ms-docker-node-only
+
+networks:
+  ms-docker-node-only:
+    name: ${COMPOSE_PROJECT_NAME}
+    attachable: true
